@@ -1,0 +1,29 @@
+body,html {
+	margin:0;
+	padding:0;
+    background: #333;
+    color: #fff;
+    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+}
+
+#wrap {
+	margin:0 auto;
+	width: 1120px;
+}
+
+#code {
+	width: 360px;
+	float:left;
+}
+
+#inputbox {
+	width: 350px;
+	height: 600px;
+}
+
+#holder {
+	float: right;
+    width: 740px;
+	height: 600px;
+}
+
