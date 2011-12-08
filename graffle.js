@@ -1,5 +1,4 @@
 //"borrowed" from http://raphaeljs.com/graffle.html
-
 Raphael.fn.connection = function (obj1, obj2, line, bg) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
@@ -64,9 +63,9 @@ window.onload = function () {
         this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
         this.animate({"fill-opacity": .2}, 500);
     },
-        move = function (dx, dy) {
+        move = function (dx, dy) { //'this' here is a Raphael's Element
             var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-            this.attr(att);
+            this.attr(att); //sets attributes of an Element
             for (var i = connections.length; i--;) {
                 r.connection(connections[i]);
             }
