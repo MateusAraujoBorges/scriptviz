@@ -89,5 +89,11 @@ window.onload = function () {
     connections.push(r.connection(shapes[0], shapes[1], "#fff"));
     connections.push(r.connection(shapes[1], shapes[2], "#fff", "#fff|5"));
     connections.push(r.connection(shapes[1], shapes[3], "#000", "#fff"));
+
+//bind function to button
+	document.getElementById('eval').onclick = function() {
+		var text = document.getElementById('inputbox').value;
+		Scriptviz.process(text);
+	}
 };
 
