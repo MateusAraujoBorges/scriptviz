@@ -80,12 +80,45 @@ window.onload = function () {
                     r.rect(290, 80, 60, 40, 10),
                     r.rect(290, 180, 60, 40, 2),
                     r.ellipse(450, 100, 20, 20)
-                ];
-    for (var i = 0, ii = shapes.length; i < ii; i++) {
-        var color = Raphael.getColor();
-        shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        shapes[i].drag(move, dragger, up);
-    }
+                ],
+	    buildGraph = function(data) { //show graph in image
+			r.clear(); //clean existing shapes from paper
+			shapes = []; //clean existing shapes
+			var nodes = data.nodes;
+			var radius = data.config.radius;
+			var width = data.config.width;
+			var height = data.config.height;
+
+			nodes.forEach(function(element,index,array){
+				var id = element.id;
+				var label = element.label;
+				var x,y;
+				//check if position is already determined
+				if (element.x !== undefined && element.y !== undefined) {
+					x = element.x;
+					y = element.y;
+				} else {
+					x = Math.random()*(width);
+					y = Math.random()*(height);
+				}
+				var shapeSet = r.set(); //lets combine both text and shape!
+				shapeSet.push (
+					r.text(x,y,label),
+					r.circle(x,y,radius)
+				);
+
+				var color = Raphael.getColor();
+				shapeSet.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+				shapeSet.drag(move, dragger, up);				
+				shapes.push(shapeSet);
+			});
+		}
+	
+	for (var i = 0, ii = shapes.length; i < ii; i++) {
+      var color = Raphael.getColor();
+      shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+      shapes[i].drag(move, dragger, up);
+	}
     connections.push(r.connection(shapes[0], shapes[1], "#fff"));
     connections.push(r.connection(shapes[1], shapes[2], "#fff", "#fff|5"));
     connections.push(r.connection(shapes[1], shapes[3], "#000", "#fff"));
@@ -93,7 +126,9 @@ window.onload = function () {
 //bind function to button
 	document.getElementById('eval').onclick = function() {
 		var text = document.getElementById('inputbox').value;
-		Scriptviz.process(text);
+		var data = Scriptviz.process(text);
+//		var newPos = ScriptViz.kk(data);
+		buildGraph(data);
 	}
 };
 
