@@ -59,13 +59,40 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
 var el;
 window.onload = function () {
     var dragger = function () {
-        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+		// if (this.type == "circle") {
+		// 	var text = this.myText; //apply same changes to the text
+		// 	text.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+		// 	text.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+		// 	this.animate({"fill-opacity": .2}, 500);
+		// }
+//        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+//        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+
+		var x,y,isCircle = false;
+		if (this.type == "rect" || this.type == "text") {
+			x = this.attr("x"); 
+			y = this.attr("y");
+		} else if (this.type == "circle") {
+			x = this.attr("cx"); 
+			y = this.attr("cy");
+			isCircle = true;
+		}
+
+		this.ox = x;
+		this.oy = y;
         this.animate({"fill-opacity": .2}, 500);
+
+		if(isCircle) {
+			dragger.apply(this.myText);
+		}
     },
         move = function (dx, dy) { //'this' here is a Raphael's Element
-            var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-            this.attr(att); //sets attributes of an Element
+            var att = (this.type == "rect" || this.type == "text") ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+			if(this.type == "circle") {
+				this.attr(att); //sets attributes of an Element
+				this.myText.attr({x:(att.cx),y:(att.cy)});
+			}
+            
             for (var i = connections.length; i--;) {
                 r.connection(connections[i]);
             }
@@ -73,6 +100,9 @@ window.onload = function () {
         },
         up = function () {
             this.animate({"fill-opacity": 0}, 500);
+			if(this.type == "circle") {
+				this.myText.animate({"fill-opacity": 0}, 500);
+			}
         },
         r = Raphael("holder", 740, 600),
         connections = [],
@@ -102,10 +132,10 @@ window.onload = function () {
 					y = Math.random()*(height);
 				}
 				var shapeSet = r.set(); //lets combine both text and shape!
-				shapeSet.push (
-					r.text(x,y,label),
-					r.circle(x,y,radius)
-				);
+				var text = r.text(x,y,label);
+				var circle = r.circle(x,y,radius);
+				circle.myText = text;
+				shapeSet.push (text,circle);
 
 				var color = Raphael.getColor();
 				shapeSet.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
