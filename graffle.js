@@ -1,5 +1,5 @@
 //"borrowed" from http://raphaeljs.com/graffle.html
-Raphael.fn.connection = function (obj1, obj2, line, bg) {
+Raphael.fn.connection = function (obj1, obj2, line, bg,isCurve) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -41,7 +41,13 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         y2 = [y1 - dy, y1 + dy, y1, y1][res[0]].toFixed(3),
         x3 = [0, 0, 0, 0, x4, x4, x4 - dx, x4 + dx][res[1]].toFixed(3),
         y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
-    var path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
+    var path;
+	if(isCurve) {
+		path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
+	} else {
+		path = ["M", x1.toFixed(3), y1.toFixed(3), "L", x4.toFixed(3), y4.toFixed(3)].join(",");
+	}
+	
     if (line && line.line) {
         line.bg && line.bg.attr({path: path});
         line.line.attr({path: path});
@@ -94,7 +100,7 @@ window.onload = function () {
 			}
             
             for (var i = connections.length; i--;) {
-                r.connection(connections[i]);
+                r.connection(connections[i],undefined,undefined,undefined,isCurve);
             }
             r.safari();
         },
@@ -111,6 +117,7 @@ window.onload = function () {
                     r.rect(290, 180, 60, 40, 2),
                     r.ellipse(450, 100, 20, 20)
                 ],
+	    isCurve = true,
 	    buildGraph = function(data) { //show graph in image
 			r.clear(); //clean existing shapes from paper
 			shapes = []; //clean existing shapes
@@ -120,6 +127,7 @@ window.onload = function () {
 			var width = data.config.width;
 			var height = data.config.height;
 			var nodeToShape = {};
+			isCurve = data.config.edgeCurve == "false" ? false : true;
 
 			nodes.forEach(function(element,index,array){
 				var id = element.id;
@@ -154,7 +162,7 @@ window.onload = function () {
 				var adjList = edges[id];
 				var shape = nodeToShape[id];
 				adjList.forEach(function(element,index,array) {
-				    connections.push(r.connection(shape,nodeToShape[element], "#fff", edgeLine));
+				    connections.push(r.connection(shape,nodeToShape[element], "#fff", edgeLine,isCurve));
 				});
 			});
 		}

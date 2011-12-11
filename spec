@@ -18,6 +18,7 @@
     "maxIterations" : 500,
 	"width" : 740,
 	"height" : 600,
-	"edgeLine" : "#fff"
+	"edgeLine" : "#fff",
+	"edgeCurve": "false"
 	      }
 }
