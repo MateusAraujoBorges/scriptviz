@@ -115,9 +115,11 @@ window.onload = function () {
 			r.clear(); //clean existing shapes from paper
 			shapes = []; //clean existing shapes
 			var nodes = data.nodes;
+			var edges = data.edges;
 			var radius = data.config.radius;
 			var width = data.config.width;
 			var height = data.config.height;
+			var nodeToShape = {};
 
 			nodes.forEach(function(element,index,array){
 				var id = element.id;
@@ -141,6 +143,19 @@ window.onload = function () {
 				shapeSet.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 				shapeSet.drag(move, dragger, up);				
 				shapes.push(shapeSet);
+
+				nodeToShape[id] = shapeSet;
+			});
+
+			//now create the connections for each Node
+			var edgeLine = data.config.edgeLine;
+			nodes.forEach(function(element,index,array){
+				var id = element.id;
+				var adjList = edges[id];
+				var shape = nodeToShape[id];
+				adjList.forEach(function(element,index,array) {
+				    connections.push(r.connection(shape,nodeToShape[element], "#fff", edgeLine));
+				});
 			});
 		}
 	
@@ -157,7 +172,7 @@ window.onload = function () {
 	document.getElementById('eval').onclick = function() {
 		var text = document.getElementById('inputbox').value;
 		var data = Scriptviz.process(text);
-//		var newPos = ScriptViz.kk(data);
+//		var newPos = Scriptviz.kk(data);
 		buildGraph(data);
 	}
 };

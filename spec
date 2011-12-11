@@ -5,13 +5,11 @@
     {"id": 3, "label":"cc"},
     {"id": 4, "label":"dd"}
          ],
-"edges": [
-    {"1":2},
-    {"1":3},
-    {"1":4},
-    {"2":3},
-    {"3":4}
-          ],
+"edges": {
+	"1":[2,3,4],
+    "2":[3],
+    "3":[4]
+		 },
 "config": {
     "color" : "#ffc",
 	"radius": 30,
@@ -19,6 +17,7 @@
     "scale" : 0.4,
     "maxIterations" : 500,
 	"width" : 740,
-	"height" : 600
+	"height" : 600,
+	"edgeLine" : "#fff"
 	      }
 }
