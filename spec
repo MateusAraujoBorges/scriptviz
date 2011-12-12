@@ -19,6 +19,11 @@
 	"width" : 740,
 	"height" : 600,
 	"edgeLine" : "#fff",
-	"edgeCurve": "false"
+	"edgeCurve": "false",
+	"EPSILON" : 0.1,
+	"lengthFactor" : 0.9,
+	"disconnectedMultiplier" : 0.5,
+	"adjustForGravity" : "true",
+	"exchangeVertices" : "true"
 	      }
 }
