@@ -159,7 +159,7 @@ window.onload = function () {
 			var edgeLine = data.config.edgeLine;
 			nodes.forEach(function(element,index,array){
 				var id = element.id;
-				var adjList = edges[id];
+				var adjList = edges[id] !== undefined ? edges[id] : [];
 				var shape = nodeToShape[id];
 				adjList.forEach(function(element,index,array) {
 				    connections.push(r.connection(shape,nodeToShape[element], "#fff", edgeLine,isCurve));
