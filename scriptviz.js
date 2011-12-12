@@ -1,3 +1,4 @@
+//based on JUNG (java api for graphs)
 (function() {
 "use strict";
 
@@ -239,6 +240,55 @@
 		return energy;
 	}
 
+	function step() {
+		iteration++;
+		var energy = calcEnergy();
+		console.debug("Kamada-Kawai V=" + nNodes + "(" + nNodes + ")" + " IT: " + iteration + " E=" + energy );
+
+		if (nNodes === 0) {return;}
+
+		var maxDeltaM = 0;
+		var pm = -1;            // the node having max deltaM
+		for (var i = 0; i < nNodes; i++) {
+			var deltam = calcDeltaM(i);
+
+			if (maxDeltaM < deltam) {
+				maxDeltaM = deltam;
+				pm = i;
+			}
+		}
+		if (pm === -1) {	return; } //nothing to do anymore
+
+		for (var i = 0; i < 100; i++) {
+			var dxy = calcDeltaXY(pm);
+			vertices[pm].x = vertices[pm].x + dxy[0];
+			vertices[pm].y = vertices[pm].y + dxy[1];
+
+			var deltam2 = calcDeltaM(pm);
+			if (deltam2 < EPSILON) {	break; }
+		}
+
+		if (adjustForGravity) {	adjustGravity(); }
+
+		if (exchangeVertices && maxDeltaM < EPSILON) {
+			energy = calcEnergy();
+			for (var i = 0; i < nNodes - 1; i++) {
+				for (var j = i + 1; j < nNodes; j++) {
+					var xenergy = calcEnergyIfExchanged(i, j);
+					if (energy > xenergy) {
+						var sx = vertices[i].x;
+						var sy = vertices[i].y;
+						vertices[i].x = vertices[j].x;
+						vertices[i].y = vertices[j].y;
+						vertices[j].x = sx;
+						vertices[j].y = sy;
+						return;
+					}
+				}
+			}
+		}
+	}
+
 	function done() {
 		return (iteration > maxIterations) ? true : false;
 	}
@@ -254,6 +304,7 @@
 		while(!done()) {
 			step();
 		}
+		return data;
 	}
 
 	window.Scriptviz = 
