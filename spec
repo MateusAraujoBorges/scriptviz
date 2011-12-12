@@ -14,7 +14,6 @@
     "color" : "#ffc",
 	"radius": 30,
     "fill"  : "false",
-    "scale" : 0.4,
     "maxIterations" : 500,
 	"width" : 740,
 	"height" : 600,

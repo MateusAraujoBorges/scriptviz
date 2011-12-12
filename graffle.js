@@ -180,7 +180,7 @@ window.onload = function () {
 	document.getElementById('eval').onclick = function() {
 		var text = document.getElementById('inputbox').value;
 		var data = Scriptviz.process(text);
-//		var newPos = Scriptviz.kk(data);
+		var newPos = Scriptviz.kk(data);
 		buildGraph(data);
 	}
 };
