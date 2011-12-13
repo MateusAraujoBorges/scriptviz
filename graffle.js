@@ -126,6 +126,11 @@ window.onload = function () {
 			var radius = data.config.radius;
 			var width = data.config.width;
 			var height = data.config.height;
+			var color = data.config.color !== undefined ? data.config.color : Raphael.getColor();
+			var strokeWidth = data.config.strokeWidth !== undefined ? data.config.strokeWidth : 5;
+			var fillOpacity = data.config.fillOpacity !== undefined ? data.config.fillOpacity : 0;
+			var fontSize = data.config.fontSize !== undefined ? data.config.fontSize : 10;
+			var fontColor = data.config.fontColor !== undefined ? data.config.fontColor : "#fff";
 			var nodeToShape = {};
 			isCurve = data.config.edgeCurve == "false" ? false : true;
 
@@ -146,9 +151,8 @@ window.onload = function () {
 				var circle = r.circle(x,y,radius);
 				circle.myText = text;
 				shapeSet.push (text,circle);
-
-				var color = Raphael.getColor();
-				shapeSet.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+				shapeSet.attr({fill: color, stroke: color, "fill-opacity": fillOpacity, "stroke-width": strokeWidth, cursor: "move"});
+				text.attr({"stroke-width" : 1, "fill-opacity" : 0, "font-size" : fontSize, "fill" : fontColor, "stroke" : fontColor});
 				shapeSet.drag(move, dragger, up);				
 				shapes.push(shapeSet);
 
