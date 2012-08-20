@@ -1,4 +1,4 @@
-//based on JUNG (java api for graphs)
+//ported from JUNG (http://jung.sourceforge.net/)
 (function() {
 "use strict";
 
