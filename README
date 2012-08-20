@@ -1,1 +1,2 @@
-Implementation of the Kamada-Kawai algorithm for graph drawing in Javascript
+Implementation of the Kamada-Kawai algorithm (ported from JUNG - http://jung.sourceforge.net/)
+for graph drawing in Javascript
